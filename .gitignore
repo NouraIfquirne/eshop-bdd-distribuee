@@ -1,0 +1,22 @@
+# Données Oracle
+*.dbf
+*.log
+*.ora
+
+# Logs Docker
+logs/
+
+# Variables d'environnement sensibles
+.env
+
+# Données volumes Docker
+data/
+
+# Fichiers Windows
+Thumbs.db
+desktop.ini
+
+# Fichiers Python
+__pycache__/
+*.pyc
+import warnings.py

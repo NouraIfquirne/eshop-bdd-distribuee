@@ -1,0 +1,77 @@
+services:
+
+  oracle-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oracle-plsql
+    ports:
+      - "1522:1521"
+      - "5500:5500"
+    environment:
+      - ORACLE_PASSWORD=admin
+      - APP_USER=mon_user
+      - APP_USER_PASSWORD=mon_mdp
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./logs:/opt/oracle/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/admin@//localhost:1521/XEPDB1 > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+    networks:
+      - eshop_net
+
+  oracle-site1:
+    image: gvenzl/oracle-xe:21-slim-faststart
+    container_name: oracle-site1
+    ports:
+      - "1523:1521"
+    environment:
+      - ORACLE_PASSWORD=admin
+      - APP_USER=site1
+      - APP_USER_PASSWORD=site1_mdp
+    volumes:
+      - site1_data:/opt/oracle/oradata
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/admin@//localhost:1521/XEPDB1 > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+    networks:
+      - eshop_net
+
+  oracle-site2:
+    image: gvenzl/oracle-xe:21-slim-faststart
+    container_name: oracle-site2
+    ports:
+      - "1524:1521"
+    environment:
+      - ORACLE_PASSWORD=admin
+      - APP_USER=site2
+      - APP_USER_PASSWORD=site2_mdp
+    volumes:
+      - site2_data:/opt/oracle/oradata
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/admin@//localhost:1521/XEPDB1 > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+    networks:
+      - eshop_net
+
+volumes:
+  oracle_data:
+  site1_data:
+  site2_data:
+
+networks:
+  eshop_net:
+    driver: bridge
