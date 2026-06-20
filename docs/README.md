@@ -56,7 +56,9 @@ scripts/
 │   ├── 03_fragments_s2.sql        # Fragments Scenario 2
 │   └── 04_procedures_s2.sql       # Procedures + logs Scenario 2
 └── monitoring/
-    └── dashboard.sql              # Dashboard monitoring complet
+│    └── dashboard.sql              # Dashboard monitoring complet
+└── test_soutenance.sql
+
 ```
 
 ## Scénario 1 — Fragmentation par catégorie
